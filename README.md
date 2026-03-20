@@ -242,7 +242,7 @@ A dedicated subscription for households with learner drivers:
 ┌───────────────────────▼─────────────────────────────┐
 │                  CLOUD LAYER (OEM Backend)          │
 │  ┌────────────────┐  ┌──────────────────────────┐   │
-│  │ Payload Oracle │  │ Heritage Pack DRM \& OTA  │   │
+│  │ Payload Oracle │  │ Heritage Pack DRM \& OTA │   │
 │  │ Physics Engine │  │ Delivery Platform        │   │
 │  └────────────────┘  └──────────────────────────┘   │
 │  ┌──────────────────────────────────────────────┐   │
