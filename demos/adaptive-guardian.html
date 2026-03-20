@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adaptive Guardian AI — AXS Module III</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080C10;
+    --surface: #0F1318;
+    --teal: #0DB9A0;
+    --teal-dim: #085950;
+    --blue: #1A5FA8;
+    --gold: #D4A420;
+    --red: #D4402A;
+    --green: #2AB87A;
+    --white: #EEF0F4;
+    --gray: #5A6070;
+    --border: rgba(255,255,255,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--white); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(ellipse 500px 400px at 10% 50%, rgba(13,185,160,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 300px at 90% 20%, rgba(26,95,168,0.05) 0%, transparent 70%);
+  }
+  nav { border-bottom: 1px solid var(--border); padding: 16px 24px; position: sticky; top: 0; background: rgba(8,12,16,0.95); backdrop-filter: blur(12px); z-index: 100; display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--teal); }
+  .nav-module { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a { font-size: 12px; font-family: 'DM Mono', monospace; color: var(--gray); text-decoration: none; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; transition: all 0.2s; letter-spacing: 1px; }
+  .nav-links a:hover, .nav-links a.active { color: var(--teal); border-color: var(--teal); background: rgba(13,185,160,0.06); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .hero { padding: 56px 0 40px; text-align: center; }
+  .module-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); border: 1px solid var(--teal); padding: 4px 14px; border-radius: 2px; margin-bottom: 20px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px,6vw,60px); font-weight: 900; line-height: 1.05; margin-bottom: 14px; }
+  .hero h1 em { color: var(--teal); font-style: normal; }
+  .hero p { color: var(--gray); font-size: 15px; max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-bottom: 80px; }
+  @media(max-width:768px){ .main-grid { grid-template-columns: 1fr; } }
+
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .panel-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); }
+  .panel-header h2 { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--white); }
+  .panel-body { padding: 20px; }
+  label { display: block; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); margin-bottom: 7px; }
+  .form-group { margin-bottom: 16px; }
+  input[type=range] { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border: none; border-radius: 2px; accent-color: var(--teal); cursor: pointer; }
+  .range-row { display: flex; align-items: center; gap: 12px; }
+  .range-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--teal); min-width: 48px; text-align: right; }
+  input[type=number] { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 10px 14px; outline: none; transition: border-color 0.2s; }
+  input[type=number]:focus { border-color: var(--teal); }
+  select { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 10px 14px; outline: none; appearance: none; }
+  select option { background: var(--bg); }
+
+  .btn-run { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dim) 100%); border: none; border-radius: 8px; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #080C10; font-weight: 500; transition: all 0.2s; margin-top: 8px; }
+  .btn-run:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(13,185,160,0.25); }
+
+  /* SCORE DISPLAY */
+  .score-hero { text-align: center; padding: 20px 0; }
+  .score-ring-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto 12px; }
+  .score-ring-wrap svg { transform: rotate(-90deg); }
+  .score-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: 'DM Mono', monospace; font-size: 36px; color: var(--white); }
+  .score-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; }
+  .classification-badge { display: inline-block; margin-top: 8px; font-family: 'DM Mono', monospace; font-size: 13px; padding: 4px 16px; border-radius: 20px; border: 1px solid; }
+
+  /* SCORE DIMENSIONS */
+  .dims-grid { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+  .dim-row { display: flex; align-items: center; gap: 10px; }
+  .dim-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); width: 120px; flex-shrink: 0; }
+  .dim-track { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+  .dim-fill { height: 100%; border-radius: 3px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+  .dim-val { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--white); width: 32px; text-align: right; }
+
+  /* CHASSIS CONFIG */
+  .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .config-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+  .config-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .config-val { font-family: 'DM Mono', monospace; font-size: 13px; }
+  .val-high { color: #E07060; }
+  .val-med { color: var(--gold); }
+  .val-low { color: var(--teal); }
+  .val-ok { color: var(--green); }
+
+  /* BLIND SPOTS */
+  .blind-spot { background: rgba(212,64,42,0.08); border: 1px solid rgba(212,64,42,0.2); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
+  .bs-cat { font-family: 'DM Mono', monospace; font-size: 11px; color: #E07060; letter-spacing: 1px; margin-bottom: 4px; }
+  .bs-desc { font-size: 12px; color: var(--gray); margin-bottom: 6px; line-height: 1.5; }
+  .bs-fix { font-size: 12px; color: var(--teal); }
+  .bs-fix::before { content: '→  '; }
+
+  .mitigation { background: rgba(13,185,160,0.06); border: 1px solid rgba(13,185,160,0.15); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px; color: var(--white); line-height: 1.5; }
+  .mitigation::before { content: '🛡  '; }
+
+  .sub-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--teal); letter-spacing: 2px; text-transform: uppercase; margin: 14px 0 8px; }
+
+  .placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; text-align: center; gap: 12px; }
+  .placeholder .icon { font-size: 40px; opacity: 0.3; }
+  .placeholder p { color: var(--gray); font-size: 14px; }
+
+  .journeys-note { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: var(--gray); text-align: center; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div>
+    <div class="nav-brand">Ethos AXS Suite</div>
+    <div class="nav-module">Module III — Adaptive Guardian AI</div>
+  </div>
+  <div class="nav-links">
+    <a href="are-engine.html">Module I — ARE</a>
+    <a href="payload-oracle.html">Module II — Oracle</a>
+    <a href="adaptive-guardian.html" class="active">Module III — AGA</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="module-tag">Module III</div>
+    <h1>Adaptive <em>Guardian</em> AI</h1>
+    <p>Input a driver's journey telemetry data. The AGA scoring engine computes a Driver Score Profile and configures the Digital Chassis in real time.</p>
+  </div>
+
+  <div class="main-grid">
+    <!-- INPUT -->
+    <div class="panel">
+      <div class="panel-header"><div class="dot"></div><h2>Journey Telemetry Input</h2></div>
+      <div class="panel-body">
+
+        <div class="form-group">
+          <label>Driver Name</label>
+          <input type="text" id="driverName" value="Alex" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;">
+        </div>
+
+        <div class="form-group">
+          <label>Number of Journeys Simulated</label>
+          <div class="range-row">
+            <input type="range" id="journeys" min="1" max="50" value="10" oninput="syncAga('journeys','journeysVal')">
+            <span class="range-val" id="journeysVal">10</span>
+          </div>
+        </div>
+
+        <div style="height:1px;background:var(--border);margin:16px 0"></div>
+        <div class="sub-label" style="margin-top:0">Braking</div>
+
+        <div class="form-group">
+          <label>Avg Brake Reaction Time (ms) — lower = better</label>
+          <div class="range-row">
+            <input type="range" id="brakeReact" min="150" max="800" value="300" oninput="syncAga('brakeReact','brakeReactVal')">
+            <span class="range-val" id="brakeReactVal">300</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Emergency Brake Events (per journey)</label>
+          <div class="range-row">
+            <input type="range" id="emergBrake" min="0" max="10" value="1" oninput="syncAga('emergBrake','emergBrakeVal')">
+            <span class="range-val" id="emergBrakeVal">1</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Smooth Braking Score (0–100)</label>
+          <div class="range-row">
+            <input type="range" id="smoothBrake" min="0" max="100" value="70" oninput="syncAga('smoothBrake','smoothBrakeVal')">
+            <span class="range-val" id="smoothBrakeVal">70</span>
+          </div>
+        </div>
+
+        <div style="height:1px;background:var(--border);margin:16px 0"></div>
+        <div class="sub-label" style="margin-top:0">Lane Keeping & Gap</div>
+
+        <div class="form-group">
+          <label>Lane Departure Events (per journey)</label>
+          <div class="range-row">
+            <input type="range" id="laneDep" min="0" max="15" value="2" oninput="syncAga('laneDep','laneDepVal')">
+            <span class="range-val" id="laneDepVal">2</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Avg Following Distance (seconds) — higher = safer</label>
+          <div class="range-row">
+            <input type="range" id="followDist" min="0.5" max="5" step="0.1" value="2.0" oninput="syncAga('followDist','followDistVal')">
+            <span class="range-val" id="followDistVal">2.0</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tailgating Events (per journey)</label>
+          <div class="range-row">
+            <input type="range" id="tailgate" min="0" max="10" value="1" oninput="syncAga('tailgate','tailgateVal')">
+            <span class="range-val" id="tailgateVal">1</span>
+          </div>
+        </div>
+
+        <div style="height:1px;background:var(--border);margin:16px 0"></div>
+        <div class="sub-label" style="margin-top:0">Attention & ADAS Response</div>
+
+        <div class="form-group">
+          <label>Eyes Off Road Events (per journey)</label>
+          <div class="range-row">
+            <input type="range" id="gazeEvents" min="0" max="15" value="2" oninput="syncAga('gazeEvents','gazeEventsVal')">
+            <span class="range-val" id="gazeEventsVal">2</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>ADAS Alert Response Time (ms)</label>
+          <div class="range-row">
+            <input type="range" id="adasResp" min="200" max="1200" value="500" oninput="syncAga('adasResp','adasRespVal')">
+            <span class="range-val" id="adasRespVal">500</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Ignored ADAS Alerts (per journey)</label>
+          <div class="range-row">
+            <input type="range" id="adasIgnore" min="0" max="8" value="0" oninput="syncAga('adasIgnore','adasIgnoreVal')">
+            <span class="range-val" id="adasIgnoreVal">0</span>
+          </div>
+        </div>
+
+        <button class="btn-run" onclick="runAga()">▶  Compute Driver Profile</button>
+
+        <div class="journeys-note">
+          Simulates <span id="journeyCount">10</span> journeys with the above telemetry, applying the AGA incremental weighted-average learning model.
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="panel" style="border-left:3px solid var(--teal)">
+      <div class="panel-header"><div class="dot"></div><h2>AGA Driver Profile Output</h2></div>
+      <div class="panel-body" id="agaOutput">
+        <div class="placeholder">
+          <div class="icon">🛡️</div>
+          <p>Configure telemetry and click<br><strong>Compute Driver Profile</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function syncAga(id, valId) {
+  const v = document.getElementById(id).value;
+  document.getElementById(valId).textContent = v;
+  if (id === 'journeys') document.getElementById('journeyCount').textContent = v;
+}
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function runAga() {
+  const name = document.getElementById('driverName').value || 'Driver';
+  const journeys = parseInt(document.getElementById('journeys').value);
+  const brakeReact = parseFloat(document.getElementById('brakeReact').value);
+  const emergBrake = parseFloat(document.getElementById('emergBrake').value);
+  const smoothBrake = parseFloat(document.getElementById('smoothBrake').value) / 100;
+  const laneDep = parseFloat(document.getElementById('laneDep').value);
+  const followDist = parseFloat(document.getElementById('followDist').value);
+  const tailgate = parseFloat(document.getElementById('tailgate').value);
+  const gazeEvents = parseFloat(document.getElementById('gazeEvents').value);
+  const adasResp = parseFloat(document.getElementById('adasResp').value);
+  const adasIgnore = parseFloat(document.getElementById('adasIgnore').value);
+
+  // Score one journey
+  const reactionScore = clamp(100 - ((brakeReact - 200) / 8), 0, 100);
+  const ebPenalty = Math.min(emergBrake * 8, 40);
+  const braking = clamp(reactionScore*0.5 + smoothBrake*100*0.3 - ebPenalty*0.2, 0, 100);
+
+  const acceleration = clamp(70 + (smoothBrake*100 - 50)*0.3, 0, 100);
+
+  const deviationScore = clamp(100 - laneDep * 12, 0, 100);
+  const laneKeeping = clamp(deviationScore, 0, 100);
+
+  const headwayScore = clamp((followDist - 1.0)/2.0 * 100, 0, 100);
+  const gapManagement = clamp(headwayScore - Math.min(tailgate*12, 60), 0, 100);
+
+  const respScore = clamp(100 - ((adasResp - 400) / 12), 0, 100);
+  const hazardResponse = clamp(respScore - Math.min(adasIgnore*15, 60), 0, 100);
+
+  const gazePenalty = Math.min(gazeEvents * 8, 60);
+  const attention = clamp(100 - gazePenalty, 0, 100);
+
+  const WEIGHTS = { braking:0.25, acceleration:0.15, laneKeeping:0.20, gapManagement:0.20, hazardResponse:0.10, attention:0.10 };
+  const journeyComposite = braking*WEIGHTS.braking + acceleration*WEIGHTS.acceleration + laneKeeping*WEIGHTS.laneKeeping + gapManagement*WEIGHTS.gapManagement + hazardResponse*WEIGHTS.hazardResponse + attention*WEIGHTS.attention;
+
+  // Incremental learning simulation
+  let scores = { braking:50, acceleration:50, laneKeeping:50, gapManagement:50, hazardResponse:50, attention:50 };
+  const journeyScores = { braking, acceleration, laneKeeping, gapManagement, hazardResponse, attention };
+
+  for (let j = 0; j < journeys; j++) {
+    const lr = j < 10 ? 0.40 : 0.12;
+    Object.keys(scores).forEach(k => { scores[k] = scores[k]*(1-lr) + journeyScores[k]*lr; });
+  }
+  const composite = Object.keys(WEIGHTS).reduce((s,k) => s + scores[k]*WEIGHTS[k], 0);
+
+  let classification = 'Novice';
+  if (composite >= 80) classification = 'Expert';
+  else if (composite >= 65) classification = 'Proficient';
+  else if (composite >= 45) classification = 'Intermediate';
+
+  // Chassis config
+  const configs = {
+    Expert:       { brake:'Minimal',   torque:'Immediate', speed:'None',      alerts:'Haptic only',     gaze:'2,500 ms', launch: true },
+    Proficient:   { brake:'Standard',  torque:'Standard',  speed:'None',      alerts:'Visual + haptic', gaze:'2,000 ms', launch: true },
+    Intermediate: { brake:'Standard',  torque:'Standard',  speed:'None',      alerts:'All modalities',  gaze:'1,800 ms', launch: false },
+    Novice:       { brake:'High',      torque:'Gradual',   speed:'70 mph',    alerts:'All modalities',  gaze:'1,500 ms', launch: false },
+  };
+  const cfg = configs[classification];
+
+  // Blind spots
+  const blindSpots = [];
+  if (gazeEvents > 3) blindSpots.push({ cat:'FREQUENT_INATTENTION', desc:`Driver takes eyes off road ${Math.round(gazeEvents)}+ times per journey.`, fix:'Reduce gaze-alert threshold to 1.2s; increase haptic intensity on steering wheel.' });
+  if (tailgate > 2) blindSpots.push({ cat:'CLOSE_FOLLOWING', desc:`Consistent inadequate following distance (${followDist.toFixed(1)}s avg vs. 2.0s target).`, fix:'Enable forward collision pre-warning at 2.0s headway threshold.' });
+  if (laneDep > 3) blindSpots.push({ cat:'LANE_DRIFT_PATTERN', desc:`High lane departure frequency (${Math.round(laneDep)} events per journey).`, fix:'Expand lane-keeping assist sensitivity; enable lane-centre guidance.' });
+  if (adasIgnore > 1) blindSpots.push({ cat:'ADAS_DISMISSAL', desc:`Driver ignores ADAS alerts at elevated rate (${Math.round(adasIgnore)}/journey).`, fix:'Escalate ignored alerts to multi-modal (haptic + audio + visual) after 1 dismissal.' });
+
+  // Classification colors
+  const classColors = { Expert:'#2AB87A', Proficient:'#0DB9A0', Intermediate:'#D4A420', Novice:'#D4402A' };
+  const clsColor = classColors[classification];
+
+  function valClass(score) {
+    if (score >= 75) return 'val-ok';
+    if (score >= 55) return 'val-low';
+    if (score >= 35) return 'val-med';
+    return 'val-high';
+  }
+  function dimColor(score) {
+    if (score >= 75) return '#2AB87A';
+    if (score >= 55) return '#0DB9A0';
+    if (score >= 35) return '#D4A420';
+    return '#D4402A';
+  }
+  function cfgClass(key, val) {
+    if (key==='brake') return val==='High'?'val-high':val==='Standard'?'val-med':'val-ok';
+    if (key==='torque') return val==='Gradual'?'val-high':val==='Standard'?'val-med':'val-ok';
+    if (key==='speed') return val==='None'?'val-ok':'val-high';
+    if (key==='alerts') return val==='Haptic only'?'val-ok':'val-med';
+    return 'val-low';
+  }
+
+  const r = v => Math.round(v);
+  const circumference = 2 * Math.PI * 54;
+  const dashOffset = circumference * (1 - composite/100);
+
+  document.getElementById('agaOutput').innerHTML = `
+    <div class="score-hero">
+      <div class="score-ring-wrap">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle cx="70" cy="70" r="54" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
+          <circle cx="70" cy="70" r="54" fill="none" stroke="${clsColor}" stroke-width="10"
+            stroke-dasharray="${circumference.toFixed(1)}" stroke-dashoffset="${dashOffset.toFixed(1)}"
+            stroke-linecap="round" style="transition:stroke-dashoffset 0.8s cubic-bezier(.4,0,.2,1)"/>
+        </svg>
+        <div class="score-number">${r(composite)}</div>
+      </div>
+      <div class="score-sub">Composite Driver Score / 100</div>
+      <div class="classification-badge" style="border-color:${clsColor};color:${clsColor}">${classification}</div>
+    </div>
+
+    <div class="dims-grid">
+      ${[
+        ['Braking',scores.braking],
+        ['Acceleration',scores.acceleration],
+        ['Lane Keeping',scores.laneKeeping],
+        ['Gap Management',scores.gapManagement],
+        ['Hazard Response',scores.hazardResponse],
+        ['Attention',scores.attention],
+      ].map(([lbl,val])=>`
+        <div class="dim-row">
+          <div class="dim-label">${lbl}</div>
+          <div class="dim-track"><div class="dim-fill" style="width:${r(val)}%;background:${dimColor(val)}"></div></div>
+          <div class="dim-val">${r(val)}</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="sub-label">Digital Chassis Configuration</div>
+    <div class="config-grid">
+      <div class="config-card"><div class="config-label">Brake sensitivity</div><div class="config-val ${cfgClass('brake',cfg.brake)}">${cfg.brake}</div></div>
+      <div class="config-card"><div class="config-label">Torque profile</div><div class="config-val ${cfgClass('torque',cfg.torque)}">${cfg.torque}</div></div>
+      <div class="config-card"><div class="config-label">Speed limit</div><div class="config-val ${cfgClass('speed',cfg.speed)}">${cfg.speed}</div></div>
+      <div class="config-card"><div class="config-label">Alert modality</div><div class="config-val ${cfgClass('alerts',cfg.alerts)}">${cfg.alerts}</div></div>
+      <div class="config-card"><div class="config-label">Gaze alert threshold</div><div class="config-val val-low">&gt;${cfg.gaze}</div></div>
+      <div class="config-card"><div class="config-label">Launch control</div><div class="config-val ${cfg.launch?'val-ok':'val-high'}">${cfg.launch?'Enabled':'Locked'}</div></div>
+    </div>
+
+    ${blindSpots.length > 0 ? `
+    <div class="sub-label">Detected Blind Spots</div>
+    ${blindSpots.map(bs=>`
+      <div class="blind-spot">
+        <div class="bs-cat">${bs.cat}</div>
+        <div class="bs-desc">${bs.desc}</div>
+        <div class="bs-fix">${bs.fix}</div>
+      </div>`).join('')}
+    ` : `
+    <div class="sub-label">Blind Spot Analysis</div>
+    <div class="mitigation">No significant blind spots detected after ${journeys} journeys. Profile indicates a well-rounded, consistent driver.</div>
+    `}
+
+    <div class="sub-label">Learning Progress</div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--gray);line-height:1.6">
+      Simulated <strong style="color:var(--white)">${journeys}</strong> journeys · 
+      Learning rate: <strong style="color:var(--teal)">${journeys >= 10 ? '12%' : '40%'}</strong> per journey · 
+      Score confidence: <strong style="color:var(--white)">${Math.min(Math.round(journeys/50*100),100)}%</strong>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>

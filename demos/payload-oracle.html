@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payload Oracle — AXS Module II</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A1628;
+    --gold: #B8960C;
+    --gold-light: #E8BC2A;
+    --gold-pale: #FEF9E7;
+    --blue-mid: #1A3A5C;
+    --blue-light: #D6E4F0;
+    --white: #FAFAF8;
+    --gray: #888780;
+    --danger: #C0392B;
+    --success: #1A7A4A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  /* background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(184,150,12,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(184,150,12,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    border-bottom: 1px solid rgba(184,150,12,0.2);
+    padding: 16px 0;
+    position: sticky; top: 0;
+    background: rgba(10,22,40,0.95);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+  nav .inner { display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold-light); letter-spacing: 0.5px; }
+  .nav-module { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); letter-spacing: 2px; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a {
+    font-size: 12px; font-family: 'DM Mono', monospace;
+    color: var(--gray); text-decoration: none;
+    padding: 6px 12px; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px; transition: all 0.2s; letter-spacing: 1px;
+  }
+  .nav-links a:hover { color: var(--gold-light); border-color: var(--gold); }
+  .nav-links a.active { color: var(--gold-light); border-color: var(--gold); background: rgba(184,150,12,0.08); }
+
+  /* HERO */
+  .hero { padding: 64px 0 48px; text-align: center; }
+  .module-tag {
+    display: inline-block; font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold);
+    padding: 4px 14px; border-radius: 2px; margin-bottom: 20px;
+  }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px,6vw,64px); font-weight: 900; line-height: 1.05; margin-bottom: 16px; }
+  .hero h1 span { color: var(--gold-light); }
+  .hero p { color: var(--gray); font-size: 16px; max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+  /* MAIN LAYOUT */
+  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-bottom: 80px; }
+  @media(max-width:768px){ .main-grid { grid-template-columns: 1fr; } }
+
+  /* PANEL */
+  .panel {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; overflow: hidden;
+  }
+  .panel-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .panel-header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+  .panel-header h2 { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--white); }
+  .panel-body { padding: 22px; }
+
+  /* FORM */
+  .form-group { margin-bottom: 18px; }
+  label { display: block; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); margin-bottom: 8px; }
+  input[type=number], input[type=range], select {
+    width: 100%; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+    color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    padding: 10px 14px; outline: none; transition: border-color 0.2s;
+    appearance: none;
+  }
+  input[type=number]:focus, select:focus { border-color: var(--gold); }
+  select option { background: var(--navy); }
+  .range-row { display: flex; align-items: center; gap: 12px; }
+  input[type=range] {
+    padding: 0; height: 4px; cursor: pointer;
+    background: rgba(255,255,255,0.1);
+    border: none; border-radius: 2px;
+    accent-color: var(--gold);
+  }
+  .range-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold-light); min-width: 48px; text-align: right; }
+
+  .passengers-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+  .pax-input { text-align: center; padding: 8px 6px !important; }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; }
+  .toggle { position: relative; width: 44px; height: 24px; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0; cursor: pointer;
+    background: rgba(255,255,255,0.1); border-radius: 24px;
+    transition: 0.2s; border: 1px solid rgba(255,255,255,0.15);
+  }
+  .toggle-slider:before {
+    content: ''; position: absolute;
+    width: 18px; height: 18px; left: 2px; top: 2px;
+    background: var(--gray); border-radius: 50%; transition: 0.2s;
+  }
+  .toggle input:checked + .toggle-slider { background: rgba(184,150,12,0.2); border-color: var(--gold); }
+  .toggle input:checked + .toggle-slider:before { background: var(--gold-light); transform: translateX(20px); }
+
+  .btn-run {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--gold) 0%, #8a6d00 100%);
+    border: none; border-radius: 8px; cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--navy);
+    font-weight: 500; transition: all 0.2s; margin-top: 8px;
+  }
+  .btn-run:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(184,150,12,0.3); }
+  .btn-run:active { transform: translateY(0); }
+
+  /* OUTPUT */
+  .output-panel { border-left: 3px solid var(--gold); }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px;
+    padding: 4px 10px; border-radius: 4px; margin-bottom: 16px;
+  }
+  .status-ok { background: rgba(26,122,74,0.15); color: #4AE088; border: 1px solid rgba(26,122,74,0.4); }
+  .status-warn { background: rgba(192,57,43,0.15); color: #E07060; border: 1px solid rgba(192,57,43,0.4); }
+
+  .metric-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .metric-label { font-size: 13px; color: var(--gray); }
+  .metric-val { font-family: 'DM Mono', monospace; font-size: 14px; color: var(--white); }
+  .metric-val.gold { color: var(--gold-light); }
+  .metric-val.danger { color: #E07060; }
+  .metric-val.success { color: #4AE088; }
+
+  .penalty-bar-wrap { margin: 16px 0; }
+  .penalty-bar-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .penalty-bar-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+  .penalty-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(.4,0,.2,1), background 0.3s; }
+
+  .energy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 16px 0; }
+  .energy-card {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; padding: 10px 12px;
+  }
+  .energy-card .e-label { font-size: 11px; color: var(--gray); margin-bottom: 4px; }
+  .energy-card .e-val { font-family: 'DM Mono', monospace; font-size: 14px; color: var(--white); }
+  .energy-card .e-val span { font-size: 11px; color: var(--gray); }
+
+  .insights { margin-top: 16px; }
+  .insight-item {
+    background: rgba(184,150,12,0.06); border: 1px solid rgba(184,150,12,0.15);
+    border-radius: 8px; padding: 12px 14px; margin-bottom: 8px;
+    font-size: 13px; color: var(--white); line-height: 1.6;
+  }
+  .insight-item::before { content: '▶  '; color: var(--gold); font-size: 10px; }
+
+  .placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 300px; text-align: center; gap: 12px;
+  }
+  .placeholder .icon { font-size: 40px; opacity: 0.3; }
+  .placeholder p { color: var(--gray); font-size: 14px; }
+
+  .section-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 14px 0; }
+  .sub-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin: 14px 0 8px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container inner" style="display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div class="nav-brand">Ethos AXS Suite</div>
+      <div class="nav-module">Module II — Payload Oracle</div>
+    </div>
+    <div class="nav-links">
+      <a href="are-engine.html">Module I — ARE</a>
+      <a href="payload-oracle.html" class="active">Module II — Oracle</a>
+      <a href="adaptive-guardian.html">Module III — AGA</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="module-tag">Module II</div>
+    <h1>Payload <span>Oracle</span><br>& Range Architect</h1>
+    <p>Enter your trip details, passenger weights, and luggage to get a precision payload-adjusted range estimate with actionable trade-off insights.</p>
+  </div>
+
+  <div class="main-grid">
+    <!-- INPUT PANEL -->
+    <div class="panel">
+      <div class="panel-header"><div class="dot"></div><h2>Trip Configuration</h2></div>
+      <div class="panel-body">
+
+        <div class="form-group">
+          <label>Vehicle Platform</label>
+          <select id="vehicle">
+            <option value="eqs">Mercedes-Benz EQS 450+ (350 mi range)</option>
+            <option value="i7">BMW i7 xDrive60 (318 mi range)</option>
+            <option value="etron">Audi e-tron GT quattro (298 mi range)</option>
+            <option value="taycan">Porsche Taycan 4S (283 mi range)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Route Distance (miles)</label>
+          <div class="range-row">
+            <input type="range" id="distance" min="10" max="400" value="85" oninput="syncVal('distance','distVal')">
+            <span class="range-val" id="distVal">85</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Average Speed (mph)</label>
+          <div class="range-row">
+            <input type="range" id="speed" min="20" max="100" value="65" oninput="syncVal('speed','speedVal')">
+            <span class="range-val" id="speedVal">65</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ambient Temperature (°C)</label>
+          <div class="range-row">
+            <input type="range" id="temp" min="-20" max="45" value="20" oninput="syncVal('temp','tempVal')">
+            <span class="range-val" id="tempVal">20</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Elevation Gain (metres)</label>
+          <div class="range-row">
+            <input type="range" id="elevation" min="0" max="2000" value="0" step="50" oninput="syncVal('elevation','elevVal')">
+            <span class="range-val" id="elevVal">0</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Number of Passengers</label>
+          <div class="range-row">
+            <input type="range" id="paxCount" min="1" max="5" value="2" oninput="updatePassengers()">
+            <span class="range-val" id="paxCountVal">2</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Passenger Weights (kg each)</label>
+          <div class="passengers-grid" id="paxGrid">
+            <input class="pax-input" type="number" value="80" min="30" max="200">
+            <input class="pax-input" type="number" value="70" min="30" max="200">
+            <input class="pax-input" type="number" value="0" min="0" max="200" disabled style="opacity:0.3">
+            <input class="pax-input" type="number" value="0" min="0" max="200" disabled style="opacity:0.3">
+            <input class="pax-input" type="number" value="0" min="0" max="200" disabled style="opacity:0.3">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Luggage Weight (kg)</label>
+          <div class="range-row">
+            <input type="range" id="luggage" min="0" max="300" value="30" oninput="syncVal('luggage','luggageVal')">
+            <span class="range-val" id="luggageVal">30</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="toggle-row">
+            <label style="margin:0">Roof Box Attached</label>
+            <label class="toggle"><input type="checkbox" id="roofbox"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Load Placement</label>
+          <select id="placement">
+            <option value="standard">Standard (boot only)</option>
+            <option value="frunk_heavy">Frunk-heavy (optimised CoG)</option>
+            <option value="balanced">Balanced (even axle load)</option>
+          </select>
+        </div>
+
+        <button class="btn-run" onclick="runOracle()">▶  Calculate Range</button>
+      </div>
+    </div>
+
+    <!-- OUTPUT PANEL -->
+    <div class="panel output-panel">
+      <div class="panel-header"><div class="dot"></div><h2>Range Analysis Output</h2></div>
+      <div class="panel-body" id="output">
+        <div class="placeholder">
+          <div class="icon">📡</div>
+          <p>Configure your trip and click<br><strong>Calculate Range</strong> to see results</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const VEHICLES = {
+  eqs:    { name: 'Mercedes-Benz EQS 450+', range: 350, battery: 107.8, weight: 2585, cd: 0.20, area: 2.51, regen: 0.70 },
+  i7:     { name: 'BMW i7 xDrive60',         range: 318, battery: 101.7, weight: 2715, cd: 0.24, area: 2.65, regen: 0.68 },
+  etron:  { name: 'Audi e-tron GT quattro',  range: 298, battery: 93.4,  weight: 2340, cd: 0.24, area: 2.40, regen: 0.72 },
+  taycan: { name: 'Porsche Taycan 4S',        range: 283, battery: 93.4,  weight: 2295, cd: 0.22, area: 2.35, regen: 0.73 },
+};
+const G = 9.81, AIR = 1.225, KM_PER_MILE = 1.60934;
+const PLACEMENT = { standard: 1.0, frunk_heavy: 0.985, balanced: 0.992 };
+
+function syncVal(id, valId) {
+  document.getElementById(valId).textContent = document.getElementById(id).value;
+}
+
+function updatePassengers() {
+  const n = parseInt(document.getElementById('paxCount').value);
+  document.getElementById('paxCountVal').textContent = n;
+  const inputs = document.querySelectorAll('.pax-input');
+  inputs.forEach((inp, i) => {
+    inp.disabled = i >= n;
+    inp.style.opacity = i >= n ? '0.3' : '1';
+    if (i >= n) inp.value = 0;
+    else if (inp.value == 0) inp.value = 75;
+  });
+}
+
+function runOracle() {
+  const v = VEHICLES[document.getElementById('vehicle').value];
+  const dist = parseFloat(document.getElementById('distance').value);
+  const speedMph = parseFloat(document.getElementById('speed').value);
+  const tempC = parseFloat(document.getElementById('temp').value);
+  const elevM = parseFloat(document.getElementById('elevation').value);
+  const roofbox = document.getElementById('roofbox').checked;
+  const placement = document.getElementById('placement').value;
+  const luggage = parseFloat(document.getElementById('luggage').value);
+  const paxInputs = document.querySelectorAll('.pax-input');
+  const paxWeights = Array.from(paxInputs).filter(i => !i.disabled).map(i => parseFloat(i.value)||0);
+  const totalPayload = paxWeights.reduce((a,b)=>a+b,0) + luggage;
+
+  const distKm = dist * KM_PER_MILE;
+  const speedMs = speedMph * 0.44704;
+  const effBase = v.battery / v.range;
+
+  // Baseline energy
+  const baseEnergy = effBase * dist;
+
+  // Kinetic penalty
+  const cycles = Math.max(1, distKm / 2.0);
+  const keJ = 0.5 * totalPayload * (speedMs**2) * cycles * (1 - v.regen);
+  const keKwh = keJ / 3600000;
+
+  // Rolling resistance
+  const crrBase = 0.010, crrMassFactor = 0.00002;
+  const crrPayload = crrBase + (totalPayload * crrMassFactor);
+  const totalMass = v.weight + totalPayload;
+  const rrJ = (crrPayload - crrBase) * totalMass * G * distKm * 1000;
+  const rrKwh = rrJ / 3600000;
+
+  // Aero penalty (roof box)
+  const cdEff = roofbox ? v.cd + 0.07 : v.cd;
+  const aeroBase = 0.5 * AIR * v.cd * v.area * (speedMs**3) * (distKm*1000/speedMs);
+  const aeroDrag = 0.5 * AIR * cdEff * v.area * (speedMs**3) * (distKm*1000/speedMs);
+  const aeroKwh = (aeroDrag - aeroBase) / 3600000;
+
+  // Elevation
+  const elevKwh = elevM > 0 ? (totalMass * G * elevM) / 3600000 : 0;
+
+  // HVAC
+  const hvacKwh = Math.abs(tempC - 20) * 0.08 * dist / 100;
+
+  // Total with placement modifier
+  const pm = PLACEMENT[placement];
+  const totalEnergy = (baseEnergy + keKwh + rrKwh + aeroKwh + elevKwh + hvacKwh) * pm;
+
+  const adjEff = totalEnergy / dist;
+  const adjRange = Math.round(v.battery / adjEff);
+  const penalty = Math.round(v.range - adjRange);
+  const penaltyPct = ((penalty / v.range) * 100).toFixed(1);
+  const canComplete = adjRange >= dist;
+  const shortfall = Math.max(0, dist - adjRange);
+  const ci = Math.round(adjRange * 0.05);
+
+  // Insights
+  const insights = [];
+  if (roofbox) {
+    const gainApprox = Math.round(aeroKwh / adjEff);
+    insights.push(`Removing the roof box recovers ~${gainApprox} miles by eliminating the aerodynamic drag penalty.`);
+  }
+  if (placement === 'standard' && totalPayload > 50) {
+    insights.push(`Switching to Frunk-Heavy placement could recover ~${Math.round(dist * 0.015)} miles by improving centre of gravity and reducing tyre rolling resistance.`);
+  }
+  if (!canComplete) {
+    const shortLbs = Math.round(shortfall * 2.5 * 2.205);
+    insights.push(`You are ${Math.round(shortfall)} miles short. Reducing luggage by ~${shortLbs} lbs would allow you to complete the trip without a charging stop.`);
+  }
+  if (penaltyPct > 15) {
+    insights.push(`Your payload is reducing range by ${penaltyPct}% (${penalty} miles). Consider leaving non-essential items behind.`);
+  }
+  if (insights.length === 0) insights.push('Your load is well-optimised. No significant trade-offs identified for this trip.');
+
+  const barColor = penaltyPct > 30 ? '#E07060' : penaltyPct > 15 ? '#E8BC2A' : '#4AE088';
+  const barW = Math.min(parseFloat(penaltyPct), 100);
+
+  document.getElementById('output').innerHTML = `
+    <div class="status-badge ${canComplete ? 'status-ok' : 'status-warn'}">
+      ${canComplete ? '✓ Trip Feasible' : '⚠ Charging Stop Required'}
+    </div>
+
+    <div class="metric-row">
+      <span class="metric-label">Vehicle</span>
+      <span class="metric-val" style="font-size:12px">${v.name}</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Baseline range</span>
+      <span class="metric-val">${v.range} mi</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Payload-adjusted range</span>
+      <span class="metric-val gold">${adjRange} mi <small style="color:var(--gray);font-size:11px">±${ci} mi</small></span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Payload penalty</span>
+      <span class="metric-val danger">−${penalty} mi (${penaltyPct}%)</span>
+    </div>
+    ${!canComplete ? `<div class="metric-row">
+      <span class="metric-label">Range shortfall</span>
+      <span class="metric-val danger">${Math.round(shortfall)} mi</span>
+    </div>` : ''}
+    <div class="metric-row">
+      <span class="metric-label">Total payload</span>
+      <span class="metric-val">${Math.round(totalPayload)} kg (${Math.round(totalPayload*2.205)} lbs)</span>
+    </div>
+
+    <div class="penalty-bar-wrap">
+      <div class="penalty-bar-label">Payload penalty</div>
+      <div class="penalty-bar-track">
+        <div class="penalty-bar-fill" style="width:${barW}%;background:${barColor}"></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Energy Breakdown</div>
+    <div class="energy-grid">
+      <div class="energy-card"><div class="e-label">Baseline</div><div class="e-val">${baseEnergy.toFixed(1)} <span>kWh</span></div></div>
+      <div class="energy-card"><div class="e-label">Kinetic penalty</div><div class="e-val">+${keKwh.toFixed(2)} <span>kWh</span></div></div>
+      <div class="energy-card"><div class="e-label">Rolling resistance</div><div class="e-val">+${rrKwh.toFixed(2)} <span>kWh</span></div></div>
+      <div class="energy-card"><div class="e-label">Aero drag</div><div class="e-val">+${aeroKwh.toFixed(2)} <span>kWh</span></div></div>
+      <div class="energy-card"><div class="e-label">Elevation</div><div class="e-val">+${elevKwh.toFixed(2)} <span>kWh</span></div></div>
+      <div class="energy-card"><div class="e-label">HVAC load</div><div class="e-val">+${hvacKwh.toFixed(2)} <span>kWh</span></div></div>
+    </div>
+
+    <div class="sub-label">Trade-off Insights</div>
+    <div class="insights">${insights.map(i=>`<div class="insight-item">${i}</div>`).join('')}</div>
+  `;
+}
+</script>
+</body>
+</html>

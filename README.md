@@ -1,7 +1,7 @@
 # 🚗 The Ethos Intelligence Suite — AXS (Adaptive Experience System)
 
-> \*\*A Novel Product Strategy \& Case Study for Next-Generation Luxury Electric Vehicles\*\*  
-> \*Submitted as a Product Innovation Proposal to Mercedes-Benz · BMW Group · Audi AG · Porsche AG\*
+> \\\\\\\*\\\\\\\*A Novel Product Strategy \\\\\\\& Case Study for Next-Generation Luxury Electric Vehicles\\\\\\\*\\\\\\\*  
+> \\\\\\\*Submitted as a Product Innovation Proposal to Mercedes-Benz · BMW Group · Audi AG · Porsche AG\\\\\\\*
 
 [!\[License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 \[!\[Status: Proposal](https://img.shields.io/badge/Status-Innovation%20Proposal-blue)]()
@@ -22,10 +22,30 @@ The **Ethos Intelligence Suite (AXS)** is a cohesive, software-defined product s
 
 \---
 
+## \## 🌐 Live Interactive Demos
+
+## 
+
+###### Click to open each module's interactive web demo — no install required:
+
+###### 
+
+###### | Module | Demo | Description |
+
+###### |--------|------|-------------|
+
+###### | \*\*Module I — ARE\*\* | \[🔊 Open Acoustic Engine Demo](https://ollie7098.github.io/ethos-axs-suite/demos/are-engine.html) | Adjust motor state, select Heritage Profile, see real-time DSP output |
+
+###### | \*\*Module II — Oracle\*\* | \[📡 Open Payload Oracle Demo](https://ollie7098.github.io/ethos-axs-suite/demos/payload-oracle.html) | Configure trip, passengers, luggage — get range analysis \& trade-off insights |
+
+###### | \*\*Module III — AGA\*\* | \[🛡️ Open Adaptive Guardian Demo](https://ollie7098.github.io/ethos-axs-suite/demos/adaptive-guardian.html) | Input journey telemetry — compute driver score, chassis config \& blind spots |
+
+
+
 ## 🚀 The Core Thesis
 
-> \*\*The vehicle of tomorrow does not ask its owner to adapt to the machine.  
-> The vehicle of tomorrow adapts to the human — learning, protecting, and evolving, one journey at a time.\*\*
+> \\\\\\\*\\\\\\\*The vehicle of tomorrow does not ask its owner to adapt to the machine.  
+> The vehicle of tomorrow adapts to the human — learning, protecting, and evolving, one journey at a time.\\\\\\\*\\\\\\\*
 
 The luxury EV market in 2026 is increasingly competitive on hardware specs. The next decade of differentiation will be won on **intelligence** — the vehicle's ability to know its owner as an individual and serve them accordingly.
 
@@ -37,62 +57,72 @@ The luxury EV market in 2026 is increasingly competitive on hardware specs. The 
 ethos-axs-suite/
 │
 ├── README.md                          # This file
-├── CASE\_STUDY.md                      # Full written case study (Markdown version)
+├── CASE\\\\\\\_STUDY.md                      # Full written case study (Markdown version)
 ├── CONTRIBUTING.md                    # Contribution guidelines
 ├── LICENSE                            # MIT License
 │
 ├── docs/
 │   ├── architecture/
-│   │   ├── system\_overview.md         # Three-tier architecture overview
-│   │   ├── edge\_layer.md              # On-vehicle compute specification
-│   │   ├── cloud\_layer.md             # Cloud backend \& Partner API Gateway
-│   │   └── data\_flow.md               # End-to-end data flow diagrams
+│   │   ├── system\\\\\\\_overview.md         # Three-tier architecture overview
+│   │   ├── edge\\\\\\\_layer.md              # On-vehicle compute specification
+│   │   ├── cloud\\\\\\\_layer.md             # Cloud backend \\\\\\\& Partner API Gateway
+│   │   └── data\\\\\\\_flow.md               # End-to-end data flow diagrams
 │   ├── prd/
-│   │   ├── are\_prd.md                 # ARE Product Requirements Document
-│   │   ├── payload\_oracle\_prd.md      # Payload Oracle PRD
-│   │   └── aga\_prd.md                 # Adaptive Guardian AI PRD
+│   │   ├── are\\\\\\\_prd.md                 # ARE Product Requirements Document
+│   │   ├── payload\\\\\\\_oracle\\\\\\\_prd.md      # Payload Oracle PRD
+│   │   └── aga\\\\\\\_prd.md                 # Adaptive Guardian AI PRD
 │   ├── compliance/
-│   │   ├── gdpr\_biometric.md          # GDPR Art. 9 compliance approach
-│   │   ├── unece\_wp29.md              # OTA cybersecurity compliance
-│   │   └── avas\_directive.md          # Acoustic Vehicle Alerting System rules
+│   │   ├── gdpr\\\\\\\_biometric.md          # GDPR Art. 9 compliance approach
+│   │   ├── unece\\\\\\\_wp29.md              # OTA cybersecurity compliance
+│   │   └── avas\\\\\\\_directive.md          # Acoustic Vehicle Alerting System rules
 │   └── gtm/
-│       ├── phased\_launch.md           # 4-phase Go-To-Market plan
-│       └── monetization.md            # Revenue model \& pricing strategy
+│       ├── phased\\\\\\\_launch.md           # 4-phase Go-To-Market plan
+│       └── monetization.md            # Revenue model \\\\\\\& pricing strategy
+
+│
+├── demos/
+
+│   ├── are-engine.html
+
+│   ├── payload-oracle.html
+
+│   └── adaptive-guardian.html
+
 │
 ├── src/
 │   ├── are/
-│   │   ├── dsp\_engine.py              # DSP acoustic transfer function prototype
-│   │   ├── heritage\_profiles.json     # Heritage acoustic profile configurations
+│   │   ├── dsp\\\\\\\_engine.py              # DSP acoustic transfer function prototype
+│   │   ├── heritage\\\\\\\_profiles.json     # Heritage acoustic profile configurations
 │   │   └── README.md                  # ARE technical documentation
-│   ├── payload\_oracle/
-│   │   ├── physics\_model.py           # Kinetic energy penalty calculation engine
-│   │   ├── advice\_engine.py           # Natural language recommendation generator
-│   │   ├── load\_optimizer.py          # Optimal load distribution algorithm
+│   ├── payload\\\\\\\_oracle/
+│   │   ├── physics\\\\\\\_model.py           # Kinetic energy penalty calculation engine
+│   │   ├── advice\\\\\\\_engine.py           # Natural language recommendation generator
+│   │   ├── load\\\\\\\_optimizer.py          # Optimal load distribution algorithm
 │   │   └── README.md                  # Payload Oracle technical documentation
-│   └── adaptive\_guardian/
-│       ├── driver\_profiler.py         # Driver score ML model pipeline
-│       ├── chassis\_adaptor.py         # Digital chassis configuration mapper
-│       ├── gaze\_monitor.py            # Gaze tracking alert system prototype
+│   └── adaptive\\\\\\\_guardian/
+│       ├── driver\\\\\\\_profiler.py         # Driver score ML model pipeline
+│       ├── chassis\\\\\\\_adaptor.py         # Digital chassis configuration mapper
+│       ├── gaze\\\\\\\_monitor.py            # Gaze tracking alert system prototype
 │       └── README.md                  # AGA technical documentation
 │
 ├── research/
-│   ├── market\_analysis.md             # 2026 luxury EV market data \& citations
-│   ├── competitor\_landscape.md        # OEM ADAS/software feature comparison
-│   ├── payload\_physics\_study.md       # Payload Penalty research \& calculations
-│   └── user\_personas.md               # Multi-generational household persona research
+│   ├── market\\\\\\\_analysis.md             # 2026 luxury EV market data \\\\\\\& citations
+│   ├── competitor\\\\\\\_landscape.md        # OEM ADAS/software feature comparison
+│   ├── payload\\\\\\\_physics\\\\\\\_study.md       # Payload Penalty research \\\\\\\& calculations
+│   └── user\\\\\\\_personas.md               # Multi-generational household persona research
 │
 ├── assets/
-│   ├── diagrams/                      # Architecture \& flow diagrams (PNG/SVG)
+│   ├── diagrams/                      # Architecture \\\\\\\& flow diagrams (PNG/SVG)
 │   └── presentations/                 # Slide deck exports
 │
 ├── tests/
-│   ├── test\_physics\_model.py          # Unit tests for payload calculation engine
-│   ├── test\_advice\_engine.py          # NLG recommendation output tests
-│   └── test\_driver\_profiler.py        # Driver score model validation tests
+│   ├── test\\\\\\\_physics\\\\\\\_model.py          # Unit tests for payload calculation engine
+│   ├── test\\\\\\\_advice\\\\\\\_engine.py          # NLG recommendation output tests
+│   └── test\\\\\\\_driver\\\\\\\_profiler.py        # Driver score model validation tests
 │
 └── scripts/
-    ├── demo\_payload\_oracle.py          # Runnable demo: payload → range calculation
-    └── demo\_are\_profile.py             # Runnable demo: acoustic profile simulation
+    ├── demo\\\\\\\_payload\\\\\\\_oracle.py          # Runnable demo: payload → range calculation
+    └── demo\\\\\\\_are\\\\\\\_profile.py             # Runnable demo: acoustic profile simulation
 ```
 
 \---
@@ -144,7 +174,7 @@ An **AI-powered, physics-based range optimization tool** integrated into the com
 2. Computes a **Payload-Adjusted Confidence Interval** for range
 3. Generates **natural language Trade-off Insights**:
 
-> \*"Removing the roof box recovers 18 miles — enough to reach Innsbruck without a charging stop."\*
+> \\\\\\\*"Removing the roof box recovers 18 miles — enough to reach Innsbruck without a charging stop."\\\\\\\*
 
 4. Recommends **Optimal Load Distribution** (frunk vs. boot, axle balance)
 
@@ -153,7 +183,7 @@ An **AI-powered, physics-based range optimization tool** integrated into the com
 The core engine solves the **Kinetic Energy Penalty equation**:
 
 ```
-ΔE = ½ × Δm × v² × d × Crr\_factor
+ΔE = ½ × Δm × v² × d × Crr\\\\\\\_factor
 ```
 
 Where:
@@ -161,9 +191,9 @@ Where:
 * `Δm` = additional payload mass (kg)
 * `v` = average expected velocity (m/s)
 * `d` = route distance (m)
-* `Crr\_factor` = rolling resistance coefficient modifier
+* `Crr\\\\\\\_factor` = rolling resistance coefficient modifier
 
-See [`src/payload\_oracle/physics\_model.py`](src/payload_oracle/physics_model.py) for implementation.
+See [`src/payload\\\\\\\_oracle/physics\\\\\\\_model.py`](src/payload_oracle/physics_model.py) for implementation.
 
 ### Ecosystem Integration
 
@@ -242,7 +272,7 @@ A dedicated subscription for households with learner drivers:
 ┌───────────────────────▼─────────────────────────────┐
 │                  CLOUD LAYER (OEM Backend)          │
 │  ┌────────────────┐  ┌──────────────────────────┐   │
-│  │ Payload Oracle │  │ Heritage Pack DRM \& OTA │   │
+│  │ Payload Oracle │  │ Heritage Pack DRM \\\\\\\& OTA │   │
 │  │ Physics Engine │  │ Delivery Platform        │   │
 │  └────────────────┘  └──────────────────────────┘   │
 │  ┌──────────────────────────────────────────────┐   │
@@ -288,7 +318,7 @@ pip install numpy scipy pandas matplotlib
 ### Payload Oracle Demo
 
 ```bash
-python scripts/demo\_payload\_oracle.py
+python scripts/demo\\\\\\\_payload\\\\\\\_oracle.py
 ```
 
 Simulates a 85-mile trip with varying passenger and luggage loads, outputs range impact and trade-off recommendations.
@@ -296,7 +326,7 @@ Simulates a 85-mile trip with varying passenger and luggage loads, outputs range
 ### ARE Profile Demo
 
 ```bash
-python scripts/demo\_are\_profile.py
+python scripts/demo\\\\\\\_are\\\\\\\_profile.py
 ```
 
 Visualizes the acoustic transfer function mapping motor RPM-equivalent to Heritage Profile output frequencies.
@@ -307,7 +337,7 @@ Visualizes the acoustic transfer function mapping motor RPM-equivalent to Herita
 
 The complete written case study is available in:
 
-* [`CASE\_STUDY.md`](CASE_STUDY.md) — Full Markdown version
+* [`CASE\\\\\\\_STUDY.md`](CASE_STUDY.md) — Full Markdown version
 * [`docs/`](docs/) — Modular PRD documents per feature
 * The `.docx` submission document (see Releases)
 
